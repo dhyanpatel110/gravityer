@@ -10,7 +10,7 @@ const TodoApp = () => {
   const [filter, setFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
 
-  const isFirstRender = useRef(true); // 👈 useRef to track first render
+  const isFirstRender = useRef(true);
 
   // Load from localStorage on first mount
   useEffect(() => {
@@ -25,7 +25,7 @@ const TodoApp = () => {
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
-      return; // 👈 skip writing on first load
+      return;
     }
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos));
   }, [todos]);
@@ -58,7 +58,7 @@ const TodoApp = () => {
   });
 
   return (
-    <>
+    <React.Fragment>
       {isLoading ? (
         <div
           className="d-flex justify-content-center align-items-center"
@@ -90,7 +90,7 @@ const TodoApp = () => {
           </div>
         </div>
       )}
-    </>
+    </React.Fragment>
   );
 };
 
