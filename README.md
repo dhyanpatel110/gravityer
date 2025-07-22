@@ -134,6 +134,15 @@ db.collection.aggregate([
 ])
 ```
 
+## 📘 Question 3: React Build a Dynamic To-Do List Application in React.
+Objective:
+Create a React application that allows users to manage a to-do list with the following features:
+•	Add new tasks
+•	Mark tasks as complete
+•	Delete tasks
+•	Filter tasks by all, completed, and pending
+•	Persist tasks in the local storage so that they are retained after a page refresh
+
 ## Project setup
 
 ### Clone this repo
