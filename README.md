@@ -31,7 +31,7 @@ const input = [10, 9, 2, 5, 3, 7, 101, 18];
 const result = lengthOfLIS(input);
 console.log("Input:", input);
 console.log("Output:", result);
-
+```
 
 ## Project setup
 
