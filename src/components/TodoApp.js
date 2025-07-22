@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AddTodo from "./AddTodo";
 import TodoList from "./TodoList";
 import Filter from "./Filter";
@@ -6,37 +6,27 @@ import Filter from "./Filter";
 const LOCAL_STORAGE_KEY = "react_todo_list";
 
 const TodoApp = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load from localStorage or API once
+  const isFirstRender = useRef(true); // 👈 useRef to track first render
+
+  // Load from localStorage on first mount
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-
-    if (saved && saved.length > 0) {
+    if (Array.isArray(saved)) {
       setTodos(saved);
-      setIsLoading(false);
-    } else {
-      // Fetch from dummyjson if nothing in localStorage
-      fetch("https://dummyjson.com/todos?limit=5")
-        .then((res) => res.json())
-        .then((data) => {
-          const formatted = data.todos.map((todo) => ({
-            id: todo.id,
-            text: todo.todo,
-            completed: todo.completed,
-          }));
-          setTodos(formatted);
-          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formatted));
-        })
-        .catch((err) => console.error("Error:", err))
-        .finally(() => setIsLoading(false));
     }
+    setIsLoading(false);
   }, []);
 
-  // Save to localStorage every time todos change
+  // Save to localStorage — skip first render
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // 👈 skip writing on first load
+    }
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos));
   }, [todos]);
 
@@ -68,7 +58,7 @@ const TodoApp = () => {
   });
 
   return (
-    <React.Fragment>
+    <>
       {isLoading ? (
         <div
           className="d-flex justify-content-center align-items-center"
@@ -100,7 +90,7 @@ const TodoApp = () => {
           </div>
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
